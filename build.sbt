@@ -9,7 +9,30 @@ lazy val root = project.in(file("."))
     organization := "com.threatstack",
     scalaVersion := "2.12.4",
     sbtPlugin := true,
+    homepage := Some(url("https://github.com/threatstack/sbt-source-docs")),
+    scmInfo := Some(ScmInfo(url("https://github.com/threatstack/sbt-source-docs"), "scm:git:git@github.com:threatstack/sbt-source-docs.git")),
+    developers := List(Developer("rpless",
+      "Ryan Plessner",
+      "ryan.plessner@threatstack.com",
+      url("https://twitter.com/ryan_plessner"))),
+    licenses += ("Apache-2.0", url("http://www.apache.org/licenses/LICENSE-2.0")),
+    publishMavenStyle := true,
+    publishArtifact := true,
+    publishTo := {
+      val nexus = "https://oss.sonatype.org/"
+      if (isSnapshot.value)
+        Some("snapshots" at nexus + "content/repositories/snapshots")
+      else
+        Some("releases"  at nexus + "service/local/staging/deploy/maven2")
+    },
+    publishArtifact in Test := false,
     scriptedLaunchOpts := scriptedLaunchOpts.value ++ Seq("-Dplugin.version=" + version.value))
+
+credentials += Credentials("Sonatype Nexus Repository Manager",
+  "oss.sonatype.org",
+  sys.env("SONATYPE_USER"),
+  sys.env("SONATYPE_PASSWORD")
+)
 
 lazy val docs = project.in(file("docs"))
   .enablePlugins(MicrositesPlugin)
