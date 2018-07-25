@@ -1,6 +1,7 @@
 import sbt.Keys._
 
 pgpReadOnly := false
+pgpPassphrase := Some(sys.env("PGPPASSPHRASE").toCharArray)
 usePgpKeyHex(sys.env("PGPKEYHEX"))
 //credentials += Credentials(Path.userHome / ".sbt" / "pgp.credentials")
 
